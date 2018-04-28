@@ -53,4 +53,15 @@ class Controller extends BaseController {
         return $obj;
     }
 
+    public function prepareInvalidRequest($noFieldError) {
+        $reponse['error'] = 'invalid_request';
+        $reponse['message'] = 'The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed.';
+        $fields = array_map(function ($key, $value) {
+            if (!$value) {
+                return$key;
+            }
+        }, array_keys($noFieldError['campos']), $noFieldError['campos']);
+        $reponse['hint'] = "Check the [" . implode(', ', $fields) . "] parameter(s)";
+        return $reponse;
+    }
 }
